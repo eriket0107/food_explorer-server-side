@@ -62,6 +62,14 @@ class UserController{
 
     return res.json({user, test: "Cadastro alterado com sucesso!"})
   }
+
+  async index(req, res){
+    const users = await knex("users").select('*')
+    if(!users) throw new AppError('Nenhum usuário encotrado na aplicação.')
+    return res.json(users)
+  }
 }
 
 module.exports = UserController
+
+
