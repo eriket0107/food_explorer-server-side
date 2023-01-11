@@ -1,10 +1,11 @@
-class AppError{
+class AppError {
   message;
   statusCode;
-  constructor(statusCode = 400, message){
+
+  constructor(message, statusCode = 400){
     this.message = message
-    this.statusCode = statusCode
+    this.statusCode = statusCode;
   }
 }
 
-module.exports = AppError;
+module.exports = AppError
