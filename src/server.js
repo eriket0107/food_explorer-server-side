@@ -1,8 +1,10 @@
 require('express-async-errors')
 
+const cors = require('cors')
 const express = require('express')
 const AppError = require('./utils/appError')
-const cors = require('cors')
+
+const uploadConfig = require('./config/upload')
 
 const routes = require('./routes')
 
@@ -11,7 +13,11 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+
+app.use('/files', express.static(uploadConfig.UPLOAD_FOLDER))
+
 app.use(routes)
+
 
 app.use((error, req, res, next)=>{
   if(error instanceof AppError){
