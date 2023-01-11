@@ -20,3 +20,5 @@ function ensureAuth(req, res, next){
     throw new AppError('Token inválido', 401)
   }
 }
+
+module.exports = ensureAuth
