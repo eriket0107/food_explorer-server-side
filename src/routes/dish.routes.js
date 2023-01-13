@@ -19,12 +19,13 @@ const upload = multer(uploadConfig.MULTER)
 
 const dishRoutes = Router()
 
-dishRoutes.use(ensureAuth, ensureIsAdmin)
 
+dishRoutes.get("/", dishController.index)
+dishRoutes.get("/:id", ensureAuth, dishController.show)
+dishRoutes.post("/", ensureIsAdmin, ensureAuth, dishController.create)
+dishRoutes.put("/:id", ensureIsAdmin,  ensureAuth,dishController.update)
 
-dishRoutes.post("/",  dishController.create)
-
-dishRoutes.patch("/:id", upload.single('foodImg'), dishImageController.update)
+dishRoutes.patch("/:id", ensureIsAdmin ,upload.single('foodImg'), dishImageController.update)
 
 
 module.exports = dishRoutes
