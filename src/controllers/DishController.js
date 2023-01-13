@@ -45,7 +45,7 @@ class DishController{
 
   async update(req, res){
     const { title, description, category, price, ingredients } = req.body
-    const {id} = req.params
+    const { id } = req.params
     
     const dish = await knex('dishes').where({id}).first()
 
@@ -90,7 +90,7 @@ class DishController{
       let dishes;
 
       if (dishIngredients) {
-          const filterIngredients = ingredients.split(',').map(ingredient => ingredient.trim());
+          const filterIngredients = dishIngredients.split(',').map(ingredient => ingredient.trim());
           
           dishes = await knex("ingredients")
               .select([
@@ -123,8 +123,9 @@ class DishController{
           }
       })
       
-      return response.status(200).json(dishesWithIngredients);
+      return response.json(dishesWithIngredients);
   }
+  
 
   async show(req, res){
     const { id } = req.params

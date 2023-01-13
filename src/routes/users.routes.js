@@ -19,7 +19,7 @@ const userAvatarController = new UserAvatarController()
 const userRoutes = Router()
 
 userRoutes.post('/', userController.create)
-userRoutes.put('/', ensureAuth ,userController.update)
+userRoutes.put('/', ensureAuth, userController.update)
 userRoutes.get('/', ensureAuth, ensureIsAdmin, userController.index)
 
 userRoutes.patch('/', ensureAuth, upload.single('avatar'), userAvatarController.update)

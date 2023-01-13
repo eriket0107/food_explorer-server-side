@@ -68,7 +68,9 @@ class UserController{
     if(!users) throw new AppError('Nenhum usuário encotrado na aplicação.')
     return res.json(users)
   }
+
 }
+  
 
 module.exports = UserController
 
