@@ -126,7 +126,6 @@ class DishController{
       return response.json(dishesWithIngredients);
   }
   
-
   async show(req, res){
     const { id } = req.params
 
@@ -137,6 +136,14 @@ class DishController{
       ...dish,
       ingredients
     })
+  }
+
+  async delete(req, res){
+    const { id } = req.params
+
+    await knex("dishes").where({id}).delete()
+
+    return res.json('Prato excluído com sucesso!')
   }
 }
 module.exports = DishController
