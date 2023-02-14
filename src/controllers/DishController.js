@@ -1,30 +1,37 @@
 const knex = require('../db/knex')
 const AppError = require('../utils/appError')
+const DiskStorage = require("../providers/DiskStorage")
+
 // const DiskStorage = require("../providers/DiskStorage")
 
 class DishController{
   async create(req, res){
     const { title, description, category, price, ingredients } = req.body
     
-    
     const checkIfExistsDish = await knex("dishes").where({title}).first()
     
     if(checkIfExistsDish) throw new AppError('Esse prato existe')
+    
+    const foodImg = req.file.filename;
+    
+    const diskStorage = new DiskStorage()
+
+    const filename = await diskStorage.saveFile(foodImg);
 
     
-    if(!title || !description || !price ||!category) throw new AppError('É nessário preencher todos campos para cadastrar o prato.')
+    if(!title || !description || !price ||!category || !foodImg) throw new AppError('É nessário preencher todos campos para cadastrar o prato.')
     
-    const categories = ["Sobremesa", "Bebida", "Prato principal"]
+    const categories = ["main", "dissert", "drinks"]
 
     if(!categories.includes(category)) throw new AppError('Categoria não existe.')
     
     if(!ingredients) throw new AppError("Insira os ingrendientes.")
-
     const dish_id = await knex("dishes").insert({
       title, 
       description, 
       category, 
       price,
+      foodImg: filename,
     })
     
     let insertIngredients
@@ -32,8 +39,8 @@ class DishController{
     if(ingredients){
       insertIngredients = ingredients.map(name => {
         return{
-         name,
-         dish_id
+          name,
+          dish_id
         }
       })
 
@@ -52,10 +59,13 @@ class DishController{
     dish.title = title ?? dish.title
     dish.description = description ?? dish.description
     dish.category = category ?? dish.category 
-    dish.price = price ??dish.price 
-
-    let insertIngredients;
+    dish.price = price ?? dish.price 
     
+    
+    let insertIngredients;
+
+    if (!ingredients.length) throw new AppError('Não há nenhum ingrediente inserido.')
+
     if(ingredients){
       await knex('ingredients').where({dish_id: dish.id}).delete()
       
@@ -83,7 +93,7 @@ class DishController{
 
     return res.json({dish, insertIngredients})
   }
- 
+
   async index(request, response) {
       const { title, dishIngredients } = request.query;
 
