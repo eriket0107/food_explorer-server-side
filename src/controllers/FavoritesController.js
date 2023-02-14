@@ -13,30 +13,25 @@ class FavoritesController{
     const isFavorite = await knex('favorites')
     .select().where({ user_id, dish_id }).first()
     
-    if(isFavorite) return res.json('Prato já favoritado')
+    if(isFavorite){
+      await knex('favorites').where({ user_id, dish_id}).delete()
+      return res.json('Item retirado da lista de favoritos')
+    }
 
-    await knex('favorites').insert({ user_id, dish_id}).where({user_id})
-
-    return res.json("Prato favoritado com sucesso.")
+    await knex('favorites').insert({user_id, dish_id}).where({user_id})
+    return res.json('Item adicionado a lista de favoritos')
   }
 
-  async unfavorite(req, res){
+  async show(req, res){
     const user_id = req.user.id
-    const { id: dish_id } = req.params
+    const { id:dish_id } = req.params
 
-    const checkDish = await knex("dishes").where({id: dish_id}).first()
+    const checkDishFavorite = await  knex('favorites').where({user_id, dish_id}).first()
+      
+    return res.json(checkDishFavorite)
 
-    if(!user_id || !checkDish) throw new AppError('Não foi possível favoritar o prato.')
+  }
 
-    const isFavorite = await knex('favorites')
-    .select().where({ user_id, dish_id }).first()
-    
-    if(!isFavorite) return res.json('Prato não existe na lista de favoritos.')
-
-    await knex('favorites').where({ user_id, dish_id}).delete()
-
-    return res.json('Item tirado da lista de favoritos')
-}
   async index(req, res){
     const user_id = req.user.id
 
