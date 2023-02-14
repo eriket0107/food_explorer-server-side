@@ -22,11 +22,12 @@ const dishRoutes = Router()
 
 dishRoutes.get("/", dishController.index)
 dishRoutes.get("/:id", ensureAuth, dishController.show)
-dishRoutes.post("/", ensureAuth, ensureIsAdmin, dishController.create)
+dishRoutes.post("/", upload.single('foodImg'), ensureAuth, ensureIsAdmin, dishController.create)
 dishRoutes.put("/:id", ensureAuth, ensureIsAdmin, dishController.update)
 dishRoutes.delete("/:id", ensureAuth, ensureIsAdmin, dishController.delete)
 
-dishRoutes.patch("/:id", ensureAuth, ensureIsAdmin , upload.single('foodImg'), dishImageController.update)
+
+dishRoutes.patch("/:id/img", ensureAuth, ensureIsAdmin , upload.single('foodImg'), dishImageController.update)
 
 
 module.exports = dishRoutes
