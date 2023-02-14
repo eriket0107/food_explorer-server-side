@@ -14,7 +14,9 @@ class UserController{
 
     if(checkEmailExists) return res.json('Email já cadastrado.')
 
+    if(password.length < 6) throw new AppError('Senha precisa ter mais de 6 caracteres.')
     const hashedPassword = await hash(password, 8)
+
 
     await knex("users").insert({
       name, 
