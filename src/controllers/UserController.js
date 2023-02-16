@@ -38,13 +38,15 @@ class UserController{
     const emailExists = await knex("users").where({email}).first()
     
     if(emailExists && emailExists.id !== user_id) throw new AppError('Esse email já está em uso')
- 
+
     user.name = name ?? user.name
     user.email = email ?? user.name
 
     if(password && !old_password || !password && old_password) 
-      throw new AppError("Você precisa informas as duas senhas para definir uma nova.")
+      throw new AppError("Você precisa informar as duas senhas para definir uma nova.")
 
+    if(password.length < 6) throw new AppError('Senha precisa ter mais de 6 caracteres.')
+    
     if(password && old_password){
       const checkPassword = await compare(old_password, user.password)
 
