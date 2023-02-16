@@ -45,14 +45,14 @@ class UserController{
     if(password && !old_password || !password && old_password) 
       throw new AppError("Você precisa informar as duas senhas para definir uma nova.")
 
-    if(password.length < 6) throw new AppError('Senha precisa ter mais de 6 caracteres.')
-    
-    if(password && old_password){
-      const checkPassword = await compare(old_password, user.password)
-
-      if(!checkPassword) throw new AppError('Senha atual inválida')
-
-      user.password = await hash(password, 8)
+      
+      if(password && old_password){
+        const checkPassword = await compare(old_password, user.password)
+        
+        if(!checkPassword) throw new AppError('Senha atual inválida')
+        
+        if(password.length < 6) throw new AppError('Senha precisa ter mais de 6 caracteres.')
+        user.password = await hash(password, 8)
     }
 
     await knex("users")
