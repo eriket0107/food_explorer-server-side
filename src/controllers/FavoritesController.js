@@ -15,11 +15,11 @@ class FavoritesController{
     
     if(isFavorite){
       await knex('favorites').where({ user_id, dish_id}).delete()
-      return res.json('Item retirado da lista de favoritos')
+      return res.json(false)
     }
 
     await knex('favorites').insert({user_id, dish_id}).where({user_id})
-    return res.json('Item adicionado a lista de favoritos')
+    return res.json(true)
   }
 
   async show(req, res){
@@ -28,7 +28,9 @@ class FavoritesController{
 
     const checkDishFavorite = await  knex('favorites').where({user_id, dish_id}).first()
       
-    return res.json(checkDishFavorite)
+    if(!checkDishFavorite) return res.json(false)
+
+    return res.json(true)
 
   }
 
@@ -45,15 +47,15 @@ class FavoritesController{
     .select([
       "dishes.id",
       "dishes.title",
-      "dishes.price"
+      "dishes.price",
+      "dishes.foodImg"
     ]).where({user_id})
-    .innerJoin("dishes", "dishes.id", "favorites.dish_id" )
+    .innerJoin("dishes", "dishes.id", "favorites.dish_id")
     .orderBy("dishes.title")
     
     if(!userFavorites.length) return res.json('Usuário não tem pratos favoritos.')
 
   return res.json(userFavorites)
-   
   }
 }
 
