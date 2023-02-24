@@ -35,8 +35,7 @@ class DishController {
     });
 
     let insertIngredients;
-    console.log();
-    console.log(typeof ingredients);
+
     if (ingredients) {
       if (typeof ingredients !== Array) {
         insertIngredients = {
