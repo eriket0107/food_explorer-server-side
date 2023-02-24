@@ -35,19 +35,27 @@ class DishController {
     });
 
     let insertIngredients;
-
+    console.log();
+    console.log(typeof ingredients);
     if (ingredients) {
-      insertIngredients = ingredients.map((name) => {
-        return {
-          name,
-          dish_id,
+      if (typeof ingredients !== Array) {
+        insertIngredients = {
+          name: ingredients,
+          dish_id: dish_id[0],
         };
-      });
-
-      await knex('ingredients').insert(insertIngredients);
+        await knex('ingredients').insert(insertIngredients);
+        return res.json('Prato cadastrado com sucesso!');
+      } else {
+        insertIngredients = ingredients.map((name) => {
+          return {
+            name,
+            dish_id: dish_id[0],
+          };
+        });
+        await knex('ingredients').insert(insertIngredients);
+        return res.json('Prato cadastrado com sucesso!');
+      }
     }
-
-    return res.json('Prato cadastrado com sucesso!');
   }
 
   async update(req, res) {
