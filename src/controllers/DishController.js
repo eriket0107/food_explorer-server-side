@@ -37,7 +37,7 @@ class DishController {
     let insertIngredients;
 
     if (ingredients) {
-      if (typeof ingredients !== Array) {
+      if (typeof ingredients === 'string') {
         insertIngredients = {
           name: ingredients,
           dish_id: dish_id[0],
