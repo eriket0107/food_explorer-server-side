@@ -29,7 +29,9 @@ password: 123
 
 ### Installation
 You must have Node v16 or higher installed on your machine.
+In command line with the project in machine run the following commands.
 
 Instructions:
 $ npm install.
+<br>
 $ npm run start.
