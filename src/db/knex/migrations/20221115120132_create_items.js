@@ -1,12 +1,13 @@
-exports.up = knex => knex.schema.createTable('items', table => {
-	table.increments('id');
-	table.integer('order_id').references('id').inTable('orders').onDelete('CASCADE');
-	table.integer('dish_id').references('id').inTable('dishes').onDelete('CASCADE');
-   
-	table.text('title');
-	table.integer('quantity');
+exports.up = (knex) =>
+  knex.schema.createTable('items', (table) => {
+    table.increments('id');
+    table.integer('order_id').references('id').inTable('orders').onDelete('CASCADE');
+    table.integer('dish_id').references('id').inTable('dishes').onDelete('CASCADE');
 
-	table.timestamp('created_at').default(knex.fn.now());
-});
+    table.text('title');
+    table.integer('quantity');
 
-exports.down = knex => knex.schema.dropTable('ordersItems');
+    table.timestamp('created_at').default(knex.fn.now());
+  });
+
+exports.down = (knex) => knex.schema.dropTable('ordersItems');

@@ -20,7 +20,7 @@ class DishImageController {
 
     await knex('dishes').update(dish, { updated_at: knex.fn.now() }).where({ id });
 
-    return res.json(file);
+    return res.status(201).json(file);
   }
 }
 

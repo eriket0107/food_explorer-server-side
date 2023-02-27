@@ -2,8 +2,6 @@ const knex = require('../db/knex');
 const AppError = require('../utils/appError');
 const DiskStorage = require('../providers/DiskStorage');
 
-// const DiskStorage = require("../providers/DiskStorage")
-
 class DishController {
   async create(req, res) {
     const { title, description, category, price, ingredients } = req.body;
@@ -101,8 +99,8 @@ class DishController {
     return res.json({ dish, insertIngredients });
   }
 
-  async index(request, response) {
-    const { title, dishIngredients } = request.query;
+  async index(req, res) {
+    const { title, dishIngredients } = req.query;
 
     let dishes;
 
@@ -138,7 +136,7 @@ class DishController {
       };
     });
 
-    return response.json(dishesWithIngredients);
+    return res.status(201).json(dishesWithIngredients);
   }
 
   async show(req, res) {
