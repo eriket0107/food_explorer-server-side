@@ -23,7 +23,11 @@ class SessionController {
       expiresIn,
     })
 
-    return res.status(201).json({ user, token })
+    res.cookie('token', token, { httpOnly: true })
+
+    return res
+      .status(201)
+      .json({ user: { name: user.name, email: user.email } })
   }
 }
 
