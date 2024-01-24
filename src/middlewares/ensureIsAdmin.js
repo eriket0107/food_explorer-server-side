@@ -1,14 +1,14 @@
-const knex = require('../db/knex');
-const AppError = require('../utils/appError');
+const knex = require('../db/knex')
+const AppError = require('../utils/appError')
 
-async function ensureIsAdmin(req, res, next){
-	const user_id = req.user.id;
+async function ensureIsAdmin(req, res, next) {
+  const user_id = req.user.id
 
-	const user = await knex('users').where({id: user_id}).first();
+  const user = await knex('users').where({ id: user_id }).first()
 
-	if(!user.isAdmin) throw new AppError('Access Denied', 401);
+  if (!user.isAdmin) throw new AppError('Access Denied', 401)
 
-	next();
+  next()
 }
 
-module.exports = ensureIsAdmin;
+module.exports = ensureIsAdmin

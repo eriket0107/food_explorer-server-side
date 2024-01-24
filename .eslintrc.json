@@ -1,18 +1,13 @@
 {
   "env": {
-    "browser": true,
-    "commonjs": true,
-    "es2021": true
-  },
-  "extends": "eslint:recommended",
-  "overrides": [],
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
+  "node": true,
+  "es6": true
+},
+  "extends":[ "@rocketseat/eslint-config/node", "eslint:recommended"],
+  "plugins": ["node"],
   "rules": {
-    "indent": ["error", "2"],
-    "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
-    "semi": ["error", "always"]
-  }
+    "node/no-unsupported-features/es-syntax": ["off", {"ignores": ["modules"]}],
+    "camelcase": "off",
+    "@typescript-eslint/no-var-requires": "off"
+}
 }
