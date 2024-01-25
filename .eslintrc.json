@@ -6,7 +6,7 @@
   "extends":[ "@rocketseat/eslint-config/node", "eslint:recommended"],
   "plugins": ["node"],
   "rules": {
-    "node/no-unsupported-features/es-syntax": ["off", {"ignores": ["modules"]}],
+    "node/no-unsupported-features/es-syntax": "off",
     "camelcase": "off",
     "@typescript-eslint/no-var-requires": "off"
 }

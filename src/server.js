@@ -21,7 +21,6 @@ app.use('/files', express.static(uploadConfig.UPLOAD_FOLDER))
 app.use(routes)
 
 app.use((error, req, res) => {
-  console.log('Cookies: ', req.cookies)
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       status: 'error',
