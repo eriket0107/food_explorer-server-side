@@ -10,31 +10,28 @@ const uploadConfig = require('../config/upload')
 const ensureAuth = require('../middlewares/ensureAuth')
 const ensureIsAdmin = require('../middlewares/ensureIsAdmin')
 
-const dishController = new DishController()
-const dishImageController = new DishImageController()
-
 const upload = multer(uploadConfig.MULTER)
 
 const dishRoutes = Router()
 
-dishRoutes.get('/', dishController.index)
-dishRoutes.get('/:id', ensureAuth, dishController.show)
+dishRoutes.get('/', DishController.index)
+dishRoutes.get('/:id', ensureAuth, DishController.show)
 dishRoutes.post(
   '/',
   upload.single('foodImg'),
   ensureAuth,
   ensureIsAdmin,
-  dishController.create,
+  DishController.create,
 )
-dishRoutes.put('/:id', ensureAuth, ensureIsAdmin, dishController.update)
-dishRoutes.delete('/:id', ensureAuth, ensureIsAdmin, dishController.delete)
+dishRoutes.put('/:id', ensureAuth, ensureIsAdmin, DishController.update)
+dishRoutes.delete('/:id', ensureAuth, ensureIsAdmin, DishController.delete)
 
 dishRoutes.patch(
   '/:id/img',
   ensureAuth,
   ensureIsAdmin,
   upload.single('foodImg'),
-  dishImageController.update,
+  DishImageController.update,
 )
 
 module.exports = dishRoutes

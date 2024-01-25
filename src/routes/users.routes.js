@@ -12,20 +12,17 @@ const UserAvatarController = require('../controllers/UserAvatarController')
 
 const upload = multer(uploadConfig.MULTER)
 
-const userController = new UserController()
-const userAvatarController = new UserAvatarController()
-
 const userRoutes = Router()
 
-userRoutes.post('/', userController.create)
-userRoutes.put('/', ensureAuth, userController.update)
-userRoutes.get('/', ensureAuth, ensureIsAdmin, userController.index)
+userRoutes.post('/', UserController.create)
+userRoutes.put('/', ensureAuth, UserController.update)
+userRoutes.get('/', ensureAuth, ensureIsAdmin, UserController.index)
 
 userRoutes.patch(
   '/',
   ensureAuth,
   upload.single('avatar'),
-  userAvatarController.update,
+  UserAvatarController.update,
 )
 
 module.exports = userRoutes

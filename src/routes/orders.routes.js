@@ -3,14 +3,12 @@ const OrdersController = require('../controllers/OrdersController')
 const ensureIsAdmin = require('../middlewares/ensureIsAdmin')
 const ensureAuth = require('../middlewares/ensureAuth')
 
-const ordersController = new OrdersController()
-
 const ordersRoutes = Router()
 
 ordersRoutes.use(ensureAuth)
 
-ordersRoutes.get('/', ordersController.index)
-ordersRoutes.post('/', ordersController.create)
-ordersRoutes.put('/', ensureIsAdmin, ordersController.update)
+ordersRoutes.get('/', OrdersController.index)
+ordersRoutes.post('/', OrdersController.create)
+ordersRoutes.put('/', ensureIsAdmin, OrdersController.update)
 
 module.exports = ordersRoutes
