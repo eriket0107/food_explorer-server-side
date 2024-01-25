@@ -3,9 +3,7 @@ const authConfig = require('../config/auth')
 const AppError = require('../utils/appError')
 
 function ensureAuth(req, res, next) {
-  const authHeader = req.headers.authorization
-
-  const [, token] = authHeader.split(' ')
+  const { token } = req.cookies
 
   try {
     const { sub: user_id } = verify(token, authConfig.jwt.secret)
