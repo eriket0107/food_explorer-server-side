@@ -1,6 +1,8 @@
+const { v4: uuidv4 } = require('uuid')
+
 exports.up = (knex) =>
   knex.schema.createTable('favorites', (table) => {
-    table.increments('id')
+    table.increments('id', 36).default(uuidv4())
     table
       .integer('user_id')
       .references('id')
