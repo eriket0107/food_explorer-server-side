@@ -67,7 +67,15 @@ async function update(req, res) {
     })
     .where({ id: user_id })
 
-  return res.json({ user, test: 'Cadastro alterado com sucesso!' })
+  return res.json({ user, message: 'Cadastro alterado com sucesso!' })
+}
+
+async function remove(req, res) {
+  const user_id = req.user.id
+
+  await knex('users').select('*').delete().where({ user_id })
+
+  return res.json({ message: 'Excluído alterado com sucesso!' })
 }
 
 async function index(req, res) {
@@ -76,10 +84,23 @@ async function index(req, res) {
   return res.json(users)
 }
 
+async function getCurrentUser(req, res) {
+  const { id } = req.user
+  const user = await knex('users').where({ id }).first()
+
+  const { email, name, avatar } = user
+
+  if (!user) throw new AppError('Nenhum usuário encotrado na aplicação.')
+
+  return res.status(200).json({ email, name, avatar })
+}
+
 const UserController = {
   create,
   update,
+  delete: remove,
   index,
+  getCurrentUser,
 }
 
 module.exports = UserController
