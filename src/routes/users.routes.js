@@ -3,7 +3,7 @@ const { Router } = require('express')
 const multer = require('multer')
 
 const ensureAuth = require('../middlewares/ensureAuth')
-const ensureIsAdmin = require('../middlewares/ensureIsAdmin')
+const verifyUserRole = require('../middlewares/verifyRole')
 
 const uploadConfig = require('../config/upload')
 
@@ -16,7 +16,19 @@ const userRoutes = Router()
 
 userRoutes.post('/', UserController.create)
 userRoutes.put('/', ensureAuth, UserController.update)
-userRoutes.get('/', ensureAuth, ensureIsAdmin, UserController.index)
+userRoutes.get('/', ensureAuth, UserController.getCurrentUser)
+userRoutes.get(
+  '/index',
+  ensureAuth,
+  verifyUserRole(['admin']),
+  UserController.index,
+)
+userRoutes.delete(
+  '/',
+  ensureAuth,
+  verifyUserRole(['admin']),
+  UserController.delete,
+)
 
 userRoutes.patch(
   '/',

@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const OrdersController = require('../controllers/OrdersController')
-const ensureIsAdmin = require('../middlewares/ensureIsAdmin')
+const verifyUserRole = require('../middlewares/verifyRole')
 const ensureAuth = require('../middlewares/ensureAuth')
 
 const ordersRoutes = Router()
@@ -9,6 +9,6 @@ ordersRoutes.use(ensureAuth)
 
 ordersRoutes.get('/', OrdersController.index)
 ordersRoutes.post('/', OrdersController.create)
-ordersRoutes.put('/', ensureIsAdmin, OrdersController.update)
+ordersRoutes.put('/', verifyUserRole(['admin']), OrdersController.update)
 
 module.exports = ordersRoutes

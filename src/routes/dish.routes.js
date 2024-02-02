@@ -8,7 +8,7 @@ const DishImageController = require('../controllers/DishImageController')
 const uploadConfig = require('../config/upload')
 
 const ensureAuth = require('../middlewares/ensureAuth')
-const ensureIsAdmin = require('../middlewares/ensureIsAdmin')
+const verifyUserRole = require('../middlewares/verifyRole')
 
 const upload = multer(uploadConfig.MULTER)
 
@@ -20,16 +20,26 @@ dishRoutes.post(
   '/',
   upload.single('foodImg'),
   ensureAuth,
-  ensureIsAdmin,
+  verifyUserRole(['admin']),
   DishController.create,
 )
-dishRoutes.put('/:id', ensureAuth, ensureIsAdmin, DishController.update)
-dishRoutes.delete('/:id', ensureAuth, ensureIsAdmin, DishController.delete)
+dishRoutes.put(
+  '/:id',
+  ensureAuth,
+  verifyUserRole(['admin']),
+  DishController.update,
+)
+dishRoutes.delete(
+  '/:id',
+  ensureAuth,
+  verifyUserRole(['admin']),
+  DishController.delete,
+)
 
 dishRoutes.patch(
   '/:id/img',
   ensureAuth,
-  ensureIsAdmin,
+  verifyUserRole(['admin']),
   upload.single('foodImg'),
   DishImageController.update,
 )

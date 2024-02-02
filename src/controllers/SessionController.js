@@ -17,12 +17,18 @@ async function create(req, res) {
 
   const { secret, expiresIn } = authConfig.jwt
 
-  const token = sign({}, secret, {
-    subject: String(user.id),
+  const sessionToken = sign({ role: user.role }, secret, {
+    subject: JSON.stringify({
+      userId: user.id,
+    }),
     expiresIn,
   })
 
-  res.cookie('token', token, { httpOnly: true })
+  res.cookie(
+    'token',
+    { sessionToken },
+    { httpOnly: true, maxAge: 60 * 60 * 24 },
+  )
 
   return res.status(201).json({ user: { name: user.name, email: user.email } })
 }

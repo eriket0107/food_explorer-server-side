@@ -3,14 +3,16 @@ const authConfig = require('../config/auth')
 const AppError = require('../utils/appError')
 
 function ensureAuth(req, res, next) {
-  const { token } = req.cookies
+  const { sessionToken } = req.cookies.token
 
   if (req.cookies && req.cookies.token) {
     try {
-      const { sub: user_id } = verify(token, authConfig.jwt.secret)
+      const { sub, role } = verify(sessionToken, authConfig.jwt.secret)
+      const token = JSON.parse(sub)
 
       req.user = {
-        id: Number(user_id),
+        id: token.userId,
+        role,
       }
 
       return next()

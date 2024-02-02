@@ -30,7 +30,7 @@ async function index(req, res) {
 
   const user = await knex('users').where({ id: user_id }).first()
 
-  if (!user.isAdmin) {
+  if (!user.role === 'admin') {
     const orders = await knex('items')
       .where({ user_id })
       .select([
@@ -52,32 +52,32 @@ async function index(req, res) {
         items: orderItem,
       }
     })
-    return res.json(ordersWithItems)
-  } else {
-    const orders = await knex('items')
-      .select([
-        'orders.id',
-        'orders.user_id',
-        'orders.status',
-        'orders.totalPrice',
-        'orders.created_at',
-      ])
-
-      .innerJoin('orders', 'orders.id', 'items.order_id')
-      .groupBy('orders.id')
-
-    const items = await knex('items')
-    const ordersWithItems = orders.map((order) => {
-      const orderItem = items.filter((item) => item.order_id === order.id)
-
-      return {
-        ...order,
-        items: orderItem,
-      }
-    })
-
-    return res.json(ordersWithItems)
+    return res.status(200).json(ordersWithItems)
   }
+
+  const orders = await knex('items')
+    .select([
+      'orders.id',
+      'orders.user_id',
+      'orders.status',
+      'orders.totalPrice',
+      'orders.created_at',
+    ])
+
+    .innerJoin('orders', 'orders.id', 'items.order_id')
+    .groupBy('orders.id')
+
+  const items = await knex('items')
+  const ordersWithItems = orders.map((order) => {
+    const orderItem = items.filter((item) => item.order_id === order.id)
+
+    return {
+      ...order,
+      items: orderItem,
+    }
+  })
+
+  return res.status(200).json(ordersWithItems)
 }
 
 async function update(req, res) {
@@ -87,7 +87,7 @@ async function update(req, res) {
     .update({ status, updated_at: knex.fn.now() })
     .where({ id })
 
-  return res.json('Atualizado com sucesso.')
+  return res.status(200).json('Atualizado com sucesso.')
 }
 
 const OrdersController = {
